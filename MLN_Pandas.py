@@ -80,7 +80,7 @@ df['FIC_P'] = df['P']*df['FIC_AC']*df['FIC_AB']*df['FIC_BC']
 t1 = time.clock()
 
 total = t1 - t0
-print(df.head())
+#print(df.head())
 print(total)
 
 #print(df['FIC_AB_P'].sum())
