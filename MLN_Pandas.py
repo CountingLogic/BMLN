@@ -39,7 +39,21 @@ n1 = len(df.columns[pd.Series(df.columns).str.startswith('SIC')])
 n2 = len(df.columns[pd.Series(df.columns).str.startswith('FIS')])
 weights = np.array([1.5, 1.4])
 w_matrix =np.repeat(weights,[n1,n2])
-print(len(np.dot(MLN_FORMULAS, w_matrix)))
+w_matrix = pd.DataFrame(w_matrix)
+print(w_matrix)
+
+
+
+print(MLN_FORMULAS.head())
+print(MLN_FORMULAS.shape)
+P = np.exp(np.dot(MLN_FORMULAS, w_matrix))
+P = np.stack(P,axis = 1 )
+print(type(P[0]))
+P = P[0]
+print(len(P))
+#MLN_FORMULAS['Probability'] = P
+MLN_FORMULAS['Probability'] = pd.DataFrame({'Probability':P})
+print(MLN)
 
 
 
