@@ -6,7 +6,7 @@ import jedi
 import time 
 jedi.preload_module('pandas','numpy', 'itertools', 'operator')
 
-t0 = time.time()
+t0 = time.clock()
 IMPLIES = lambda x,y : ~(op.and_(x,~y))
 
 
@@ -48,7 +48,7 @@ w_matrix = pd.DataFrame(w_matrix)
 
 #print(MLN_FORMULAS.head())
 #print(MLN_FORMULAS.shape)
-P = np.exp(np.dot(MLN_FORMULAS, w_matrix))
+P = np.exp(np.matmul(MLN_FORMULAS, w_matrix))
 P = np.stack(P,axis = 1 )
 #print(type(P[0]))
 P = P[0]
@@ -78,7 +78,7 @@ df['FIC_P'] = df['Probability']*df['FIC_AC']*df['FIC_AB']*df['FIC_BC']
 
 #print(df.filter(regex=r'^SIC\.', axis=1))
 
-t1 = time.time()
+t1 = time.clock()
 
 total = t1 - t0
 print(total)
