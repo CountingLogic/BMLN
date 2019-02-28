@@ -4,7 +4,7 @@ import itertools
 import operator as op
 import time
 
-t0 = time.time()
+t0 = time.clock()
 
 IMPLIES = lambda x,y : ~(op.and_(x,~y))
 
@@ -77,7 +77,7 @@ df['FIC_P'] = df['P']*df['FIC_AC']*df['FIC_AB']*df['FIC_BC']
 #df['FIC_AB_BC_P'] = df['P']*df['FIC_AB']*df['FIC_BC']
 #df['FIC_AB_P'] = df['P']*df['FIC_AB']
  
-t1 = time.time()
+t1 = time.clock()
 
 total = t1 - t0
 print(df.head())
