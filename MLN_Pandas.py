@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np 
 import itertools
 import operator as op
+import time
+
+t0 = time.time()
+
 IMPLIES = lambda x,y : ~(op.and_(x,~y))
 
 
@@ -26,7 +30,7 @@ for Freindship in Freinds:
 
     df["FIS_"+ Freindship[1:3]] = IMPLIES(df[Freindship],(IMPLIES(df["S"+Freindship[1:2]], df["S"+ Freindship[2:3]]) & IMPLIES(df["S"+Freindship[2:3]], df["S"+ Freindship[1:2]])))
 
-    df.loc[df["FIS_"+ Freindship[1:3]]==True,["FIS_"+ Freindship[1:3]]] = 1
+    df.loc[df["FIS_"+ Freindship[1:3]]==True,["FIS_"+ Freindship[1:3]]] = 1.4
     df.loc[df["FIS_"+ Freindship[1:3]]==False,["FIS_"+ Freindship[1:3]]] = 0
 
 #df.loc[df["FIS_BC"]==True,["FIS_BC"]] = 100
@@ -58,9 +62,9 @@ df['P']  =  df['Potential']/Z
 
 #print(df)
 
-print(df['P'].sum())
+#print(df['P'].sum())
 
-print(df['P'].min())
+#print(df['P'].min())
 
 #Again loop is not running on cells but columns, the cells are operated on in a vectorised manner 
 for Freindship in Freinds:
@@ -70,11 +74,15 @@ for Freindship in Freinds:
     df.loc[df["FIC_"+ Freindship[1:3]]==False,["FIC_"+ Freindship[1:3]]] = 0
 
 df['FIC_P'] = df['P']*df['FIC_AC']*df['FIC_AB']*df['FIC_BC']
-df['FIC_AB_BC_P'] = df['P']*df['FIC_AB']*df['FIC_BC']
-df['FIC_AB_P'] = df['P']*df['FIC_AB']
+#df['FIC_AB_BC_P'] = df['P']*df['FIC_AB']*df['FIC_BC']
+#df['FIC_AB_P'] = df['P']*df['FIC_AB']
  
+t1 = time.time()
 
+total = t1 - t0
+print(df.head())
+print(total)
 
-print(df['FIC_AB_P'].sum())
+#print(df['FIC_AB_P'].sum())
 
 #print(df['FIC_AC'])
