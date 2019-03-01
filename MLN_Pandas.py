@@ -6,7 +6,7 @@ import jedi
 import time 
 jedi.preload_module('pandas','numpy', 'itertools', 'operator')
 
-t0 = time.clock()
+
 IMPLIES = lambda x,y : ~(op.and_(x,~y))
 
 
@@ -37,24 +37,36 @@ for Freindship in Freinds:
 #df.loc[df["FIS_BC"]==True,["FIS_BC"]] = 100
 
 MLN_FORMULAS = df.loc[:, df.columns.str.startswith(('FIS','SIC'))]
+
+MLN_FORMULAS_NUMPY = MLN_FORMULAS.values
+
 n1 = len(df.columns[pd.Series(df.columns).str.startswith('SIC')])
 n2 = len(df.columns[pd.Series(df.columns).str.startswith('FIS')])
+
+
 weights = np.array([1.5, 1.4])
 w_matrix =np.repeat(weights,[n1,n2])
-w_matrix = pd.DataFrame(w_matrix)
+
+
+
+#w_matrix = pd.DataFrame(w_matrix)
 #print(w_matrix)
 
 
 
 #print(MLN_FORMULAS.head())
 #print(MLN_FORMULAS.shape)
-P = np.exp(np.matmul(MLN_FORMULAS, w_matrix))
-P = np.stack(P,axis = 1 )
-#print(type(P[0]))
-P = P[0]
+t0 = time.clock()
+
+P = np.exp(np.matmul(MLN_FORMULAS_NUMPY, w_matrix))
+
+
+t1 = time.clock()
+
 #print(len(P))
 #MLN_FORMULAS['Probability'] = P
 df['Potential'] = P
+
 df['Probability'] = P/df['Potential'].sum()
 #print(df.head())
 
@@ -78,7 +90,6 @@ df['FIC_P'] = df['Probability']*df['FIC_AC']*df['FIC_AB']*df['FIC_BC']
 
 #print(df.filter(regex=r'^SIC\.', axis=1))
 
-t1 = time.clock()
 
 total = t1 - t0
 print(total)
