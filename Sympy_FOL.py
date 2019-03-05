@@ -36,11 +36,11 @@ for predicate in binary_predicates:
 
 
 
-#Constraints in conjunction 
+#Add all constraints in conjunction 
 
 constraint = '(professor_{} | course_{} | student_{}) & (professor_{} >> ~course_{}) &  (professor_{} >> ~student_{}) &  (student_{} >> ~ course_{}) & (teaches_{}_{} >> (professor_{} & student_{})) & (attends_{}_{} >> (student_{} & course_{}))'
 
-
+#
 ################################################################
 ####     START : GROUNDING THE PREDICATES AND CONSTRAINTS   ####                                
 ################################################################
@@ -75,7 +75,6 @@ for var in variables:
     constraints =  [constraint.format(i[0],i[0],i[0],i[0],i[0],i[0],i[0],i[0],i[0],i[0],i[1],i[0],i[1],i[0],i[1],i[0],i[1]) for i in itertools.product(variables, repeat = 2)]
 
 
-
 ####################################################################
 ####### DEFINING QUATIFIERS : FOR EVERY <==>  CONJUNCTION  #########
 #######                    THERE EXISTS <==>  DISJUNCTION  #########
@@ -99,23 +98,25 @@ class conjunction(Function):
     @classmethod 
     def eval(cls, x):
 
-        with evaluate(False):
-            expr = True
-            for i  in range(0, len(x)):
-                expr = (expr & (x[i]))
+        expr = True
+        for i  in range(0, len(x)):
+            expr = (expr & (x[i]))
 
-            return expr
+        return expr
 
 
 ###################################################################
 
 expr = conjunction(constraints)
-print(expr)
 with evaluate(True):
     models = satisfiable(expr, all_models = True)
 
 truth_table = list(models)
+print(truth_table[1])
 
-truth_table = pd.DataFrame(truth_table)
+#for key, value in truth_table[1].items():
+#    if value == True:
+#        print(key)
+##truth_table = pd.DataFrame(truth_table)
 
-print(truth_table)
+#print(truth_table)
